@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow | Gestor de Tareas</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        nav {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem 2rem;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            color: white;
+            font-weight: 500;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info i {
+            color: var(--success);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        nav a::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            margin-right: 8px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        nav a:hover::before {
+            opacity: 1;
+        }
+
+        main {
+            min-height: calc(100vh - 120px);
+            padding: 2rem;
+        }
+
+        /* Efecto moderno para los enlaces */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        nav ul li {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        nav ul li:nth-child(1) { animation-delay: 0.1s; }
+        nav ul li:nth-child(2) { animation-delay: 0.2s; }
+        nav ul li:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .user-info {
+                justify-content: center;
+                margin-bottom: 0.5rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+            
+            nav {
+                padding: 1rem;
+            }
+        }
+    </style>
+    <!-- Iconos de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="user-info">
+            <i class="fas fa-user-circle"></i>
+            <span>usuario: {{ user.username }}</span>
+        </div>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>
+                <a href="{% url 'crear_tarea' %}"><i class="fas fa-plus-circle"></i> Crear Tarea</a>
+            </li>
+            <li>
+                <a href="{% url 'tareas' %}"><i class="fas fa-tasks"></i> Mis Tareas</a>
+            </li>
+            <li>
+                <a href="{% url 'cerrar_sesion' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer style="text-align: center; padding: 1rem; background-color: var(--dark); color: white;">
+        <p>© 2023 TaskFlow - Gestor de Tareas</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="detail-container">
+    <h1 class="detail-title">Detalles de: <span>{{ tarea.nombre }}</span></h1>
+
+    <form class="task-form" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <div class="form-actions">
+            <button type="submit" class="update-btn">
+                <i class="fas fa-sync-alt"></i> Actualizar Tarea
+            </button>
+        </div>
+    </form>
+
+    <form class="delete-form" action="{% url 'borrar_tarea' tarea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="delete-btn" onclick="return confirm('¿Estás seguro de querer borrar esta tarea?');">
+            <i class="fas fa-trash-alt"></i> Borrar Tarea
+        </button>
+    </form>
+</div>
+
+<style>
+    .detail-container {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .detail-title {
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+    }
+
+    .detail-title span {
+        color: var(--dark);
+        font-weight: 600;
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        background-color: rgba(67, 97, 238, 0.1);
+        border-radius: var(--border-radius);
+    }
+
+    .task-form {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-bottom: 1.5rem;
+    }
+
+    .delete-form {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .task-form p {
+        margin-bottom: 1.5rem;
+    }
+
+    .task-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--dark);
+    }
+
+    .task-form input[type="text"],
+    .task-form input[type="date"],
+    .task-form input[type="datetime-local"],
+    .task-form textarea,
+    .task-form select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    .task-form textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .task-form input:focus,
+    .task-form textarea:focus,
+    .task-form select:focus {
+        border-color: var(--accent);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+    }
+
+    .form-actions {
+        margin-top: 1.5rem;
+    }
+
+    .update-btn {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .update-btn:hover {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    }
+
+    .delete-btn {
+        background: linear-gradient(135deg, var(--danger), #d11450);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .delete-btn:hover {
+        background: linear-gradient(135deg, #d11450, var(--danger));
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(247, 37, 133, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .detail-container {
+            padding: 0;
+        }
+        
+        .task-form {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}

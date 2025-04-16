@@ -1,0 +1,104 @@
+    
+   {% extends 'base.html' %}
+
+   {% block content %}
+   <div class="login-container">
+       <h1 class="login-title">Inicia sesión</h1>
+       
+       <form class="login-form" method="POST" action="{% url 'iniciar_sesion' %}">
+           {% csrf_token %}
+           
+           <div class="form-fields">
+                {% if error %}
+                <div class="error-message">
+                     <i class="fas fa-exclamation-circle"></i> {{ error }}
+                </div>
+                {% endif %}
+               {{ form.as_p }}
+           </div>
+           
+           <button type="submit" class="login-btn">
+               <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+           </button>
+       </form>
+   </div>
+   
+   <style>
+       .login-container {
+        max-width: 500px;
+        margin: 2rem auto;
+        padding: 2rem;
+           background: white;
+           border-radius: var(--border-radius);
+           box-shadow: var(--box-shadow);
+       }
+   
+       .login-title {
+           color: var(--primary);
+           text-align: center;
+           margin-bottom: 1.5rem;
+           font-size: 1.8rem;
+       }
+   
+       .login-form {
+           display: flex;
+           flex-direction: column;
+       }
+   
+       .form-fields p {
+           margin-bottom: 1.5rem;
+       }
+   
+       .form-fields label {
+           display: block;
+           margin-bottom: 0.5rem;
+           font-weight: 600;
+           color: var(--dark);
+       }
+   
+       .form-fields input {
+           width: 100%;
+           padding: 0.75rem 1rem;
+           border: 2px solid #e9ecef;
+           border-radius: var(--border-radius);
+           font-size: 1rem;
+           transition: var(--transition);
+       }
+   
+       .form-fields input:focus {
+           border-color: var(--accent);
+           outline: none;
+           box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+       }
+   
+       .login-btn {
+           background: linear-gradient(135deg, var(--primary), var(--secondary));
+           color: white;
+           border: none;
+           padding: 0.75rem 1.5rem;
+           font-size: 1rem;
+           font-weight: 600;
+           border-radius: var(--border-radius);
+           cursor: pointer;
+           transition: var(--transition);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           gap: 0.5rem;
+           margin-top: 1rem;
+       }
+   
+       .login-btn:hover {
+           background: linear-gradient(135deg, var(--secondary), var(--primary));
+           transform: translateY(-2px);
+           box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+       }
+   
+       @media (max-width: 768px) {
+           .login-container {
+               padding: 1.5rem;
+               margin: 1rem;
+           }
+       }
+   </style>
+   {% endblock %}

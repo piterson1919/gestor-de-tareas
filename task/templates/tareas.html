@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="task-list-container">
+    <div class="task-list-header">
+        <h1><i class="fas fa-tasks"></i> Mis Tareas</h1>
+        <div class="header-divider"></div>
+        <p class="task-count">{{ tareas|length }} tarea{{ tareas|length|pluralize:"s" }} encontrada{{ tareas|length|pluralize:"s" }}</p>
+    </div>
+
+    <div class="task-grid">
+        {% for tarea in tareas %}
+        <a href="{% url 'tarea_detalles' tarea.id %}" class="task-card {% if tarea.importante %}important-task{% endif %}">
+            <div class="task-card-content">
+                <div class="task-card-header">
+                    <h3>{{ tarea.nombre }}</h3>
+                    {% if tarea.importante %}
+                    <span class="importance-badge"><i class="fas fa-exclamation-circle"></i> Importante</span>
+                    {% endif %}
+                </div>
+                <p class="task-description">{{ tarea.descripcion|truncatechars:100 }}</p>
+                <div class="task-meta">
+                    <span class="task-user"><i class="fas fa-user"></i> {{ tarea.user.username }}</span>
+                    <span class="task-date"><i class="far fa-clock"></i> {{ tarea.fecha_creacion|date:"d M Y" }}</span>
+                </div>
+            </div>
+            <div class="task-card-hover"></div>
+        </a>
+        {% empty %}
+        <div class="no-tasks">
+            <i class="far fa-check-circle"></i>
+            <p>No hay tareas pendientes</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .task-list-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .task-list-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .task-list-header h1 {
+        color: #4361ee;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .header-divider {
+        height: 3px;
+        background: linear-gradient(to right, #4361ee, #4895ef, #4361ee);
+        width: 100px;
+        margin: 0 auto 1rem;
+        border-radius: 3px;
+    }
+
+    .task-count {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    .task-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .task-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .task-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .task-card.important-task {
+        border-left: 4px solid #f72585;
+    }
+
+    .task-card-content {
+        padding: 1.5rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    .task-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.8rem;
+    }
+
+    .task-card h3 {
+        margin: 0;
+        color: #2b2d42;
+        font-size: 1.2rem;
+        flex: 1;
+    }
+
+    .importance-badge {
+        background: #f72585;
+        color: white;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .task-description {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+
+    .task-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: #adb5bd;
+    }
+
+    .task-user, .task-date {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .task-card-hover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(67,97,238,0.05));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .task-card:hover .task-card-hover {
+        opacity: 1;
+    }
+
+    .no-tasks {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+        color: #adb5bd;
+    }
+
+    .no-tasks i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #4361ee;
+        opacity: 0.5;
+    }
+
+    .no-tasks p {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .task-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .task-card {
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+{% endblock %}
